@@ -10,7 +10,7 @@ import '../utils/utils.dart';
 class ScanButton extends StatelessWidget {
   const ScanButton({Key? key}) : super(key: key);
 
-  Future<HiveScanModel?> scanForHive (BuildContext context) async {
+  Future<HiveScanModel?> scanForHive(BuildContext context) async {
     final hive = context.read<HiveApi>();
 
     // final scan = await hive.insertScan('http://fernando-herrera.com');
@@ -19,7 +19,7 @@ class ScanButton extends StatelessWidget {
     return scan!;
   }
 
-  Future<ScanModel?> addScanFalse (BuildContext context) async{
+  Future<ScanModel?> addScanFalse(BuildContext context) async {
     final scansProvider = context.read<ScansProvider>();
 
     final scan = await scansProvider.newScan('http://fernando-herrera.com');
@@ -37,19 +37,15 @@ class ScanButton extends StatelessWidget {
         // String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#673AB7', 'Cancelar', false, ScanMode.QR);
         //
         // if(barcodeScanRes == '-1'){
-        //   return;
-        // } 
-        //
-        // final newScan = await scanListProvider.newScan(barcodeScanRes);
-        //
-        // if(newScan == null) {
         //   Notifications.showSnackBar('Scan canceled');
+        //   return;
         // }
 
+        // final newScan = await scanListProvider.newScan(barcodeScanRes);
         final newScan = await scanForHive(context);
-        // await addScanFalse(context);
+        // final newScan = await addScanFalse(context);
 
-        if(newScan == null){
+        if (newScan == null) {
           Notifications.showSnackBar('There was an error while saving the scan in db please try again');
           return;
         }
@@ -57,7 +53,7 @@ class ScanButton extends StatelessWidget {
         // final scansProvider = context.read<ScansProvider>();
         final scansProvider = context.read<HiveScansProvider>();
 
-        if(newScan.tipo != scansProvider.selectedType){
+        if (newScan.tipo != scansProvider.selectedType) {
           final navigationProvider = context.read<NavigationProvider>();
 
           navigationProvider.currentIndex = scansProvider.getIndex(newScan.tipo);
