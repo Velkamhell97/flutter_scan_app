@@ -33,6 +33,7 @@ class _ScanListState extends State<ScanList> {
   @override
   Widget build(BuildContext context) {
     final tileWidth = MediaQuery.of(context).size.width;
+    print(widget.type);
 
     return ListView.builder(
       // reverse: true,
@@ -64,7 +65,7 @@ class _ScanListState extends State<ScanList> {
               leading: Icon(_scansIcons[widget.type]),
               trailing: const Icon(Icons.keyboard_arrow_right),
               title: Text(scan.valor),
-              subtitle: Text('${scan.key}'),
+              subtitle: Text('${scan.tipo}: ${scan.key}'),
               onTap: () async {
                 if(scan.tipo == 'http'){
                   await canLaunch(scan.valor) ? await launch(scan.valor) : throw 'Could not launch ${scan.valor}';
