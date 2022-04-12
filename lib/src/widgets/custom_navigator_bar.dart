@@ -11,24 +11,26 @@ class CustomNavigatorBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigationProvider = context.watch<NavigationProvider>();
-    // print('build bottom');
-
-    return BottomNavigationBar(
-      onTap: (index) {
-        navigationProvider.currentIndex = index;
-
-        context.read<ScansProvider>().selectedType = _scanTabs[index].type;
-        context.read<HiveScansProvider>().selectedType = _scanTabs[index].type;
-      },
-      elevation: 8,
-      currentIndex: navigationProvider.currentIndex,
-      items: _scanTabs.map((scan) {
-        return BottomNavigationBarItem(
-          icon: Icon(scan.icon),
-          label: scan.label
+    /// El consumer es tipo de selector pero que devuelve toda la referencia del provider, util para este caso
+    /// que se necesita tanto una variable como el provider, sin embargo para providers con muchas propiedades
+    /// es mas optimo el selector por que escucha una propiedad en especifico
+    return Consumer<UIProvider>(
+      builder: (context, bottomBar, __) {
+        return BottomNavigationBar(
+          onTap: (index) {
+            bottomBar.currentIndex = index;
+            context.read<ScansProvider>().selectedType = _scanTabs[index].type;
+          },
+          elevation: 8,
+          currentIndex: bottomBar.currentIndex,
+          items: _scanTabs.map((scan) {
+            return BottomNavigationBarItem(
+              icon: Icon(scan.icon),
+              label: scan.label
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 }

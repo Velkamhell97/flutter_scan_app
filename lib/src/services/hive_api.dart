@@ -2,15 +2,15 @@ import 'package:hive/hive.dart';
 
 import '../models/models.dart';
 
-//-Se podria hacer un provider que maneje todo con hive como db pero se quiere explotar la capacidad
-//-de los listenables de este paquete con el ValueNotifierBuilder
+/// Se podria hacer un provider que maneje todo con Hive como DB pero se quiere explotar la capacidad
+/// De los listenables de este paquete con el ValueNotifierBuilder
 class HiveApi {
-  final scansBox = Hive.box<HiveScanModel>('scans');
+  final scansBox = Hive.box<Scan>('scans');
   
-  //-Forma de representar un error
-  Future<HiveScanModel?> insertScan(String value) async {
+  /// Si devuelve nulo hay error
+  Future<Scan?> insertScan(String value) async {
     final type = value.contains('http') ? 'http' : 'geo';
-    final dbScan = HiveScanModel(tipo: type, valor: value);
+    final dbScan = Scan(tipo: type, valor: value);
 
     try {
       await scansBox.add(dbScan);
@@ -20,23 +20,23 @@ class HiveApi {
     }
   }
 
-  //-Cuando se carga el box, carga todos los elementos (mas dificil capturar un error)
-  Future<List<HiveScanModel>> getScans() async {
+  /// Solo util si se utiliza Hive sin el ValueNotifierListener
+  Future<List<Scan>> getScans() async {
     final scans = scansBox.values;
     return scans.toList();
   }
 
-  Future<HiveScanModel?> getScanByKey(int scanKey) async {
+  Future<Scan?> getScanByKey(int scanKey) async {
     final scan = scansBox.get(scanKey);
     return scan;
   }
 
-  Future<List<HiveScanModel>> getScanByType(String type) async {
+  Future<List<Scan>> getScanByType(String type) async {
     final scans = scansBox.values.where((scan) => scan.tipo == type);
     return scans.toList();
   }
   
-  Future<void> updateScanByKey(int scanKey, HiveScanModel newScan) async {
+  Future<void> updateScanByKey(int scanKey, Scan newScan) async {
     await scansBox.put(scanKey, newScan);
   }
 
@@ -54,8 +54,8 @@ class HiveApi {
     final scans = scansBox.values.where((scan) => scan.tipo == type);
 
     try {
-      for(HiveScanModel scan in scans){
-        await scan.delete();
+      for(Scan scan in scans){
+        await scansBox.delete(scan.key);
       }
 
       return null;

@@ -1,16 +1,14 @@
-# qr_reader_app
+# QR Reader App
 
-A new Flutter project.
+This apps allow you scan two types of qr codes http and geo. http scans are opened in the browser of the device and geo scans showing in a map screen in the app. The scans are saved in local storage using two different db providers sqflite and hive
 
-## Getting Started
+Includes:
 
-This project is a starting point for a Flutter application.
+* Sqflite and Hive
+* Hive TypeAdapters
+* Provider as State Management with Dependency Inyection and good practices
+* PageStorageKey for save scroll position when scan list changes.
 
-A few resources to get you started if this is your first Flutter project:
+Demo: 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![](https://res.cloudinary.com/dwzr9lray/video/upload/v1649735824/flutter_repos/QR%20Reader%20App/qr_reader_app.mp4)

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_reader_app/src/providers/providers.dart';
 
 import '../widgets/widgets.dart';
+import '../providers/providers.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,25 +12,21 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('Historial'),
+        title: const Text('Historial'),
         actions: [
-          // DeleteButton(),
-          HiveDeleteButton(),
-
-          //-Vuelve a cargar los datos en caso de error (no util con hive)
+          const DeleteButton(),
           IconButton(
             onPressed: () => context.read<ScansProvider>().loadScans(), 
-            icon: Icon(Icons.replay_outlined)
+            icon: const Icon(Icons.replay_outlined)
           ),
         ]
       ),
 
-      // body: ScanTiles(),
-      body: HiveScanTiles(),
+      body: const ScanTiles(),
       
-      bottomNavigationBar: CustomNavigatorBar(),
+      bottomNavigationBar: const CustomNavigatorBar(),
       
-      floatingActionButton: ScanButton(),
+      floatingActionButton: const ScanButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
     );
   }

@@ -35,38 +35,38 @@ class SqfliteApi {
   }
 
   //------------------------- ORM OPERATIONS --------------------------//
-  Future<int> insertScan(ScanModel newScan) async {
+  Future<int> insertScan(Scan newScan) async {
     final id = await _database.insert('Scans', newScan.toMap());
     return id;
   }
 
-  Future<List<ScanModel>> getScans() async {
+  Future<List<Scan>> getScans() async {
     final results = await _database.query('Scans');
 
-    final scans = List<ScanModel>.from(results.map((s) => ScanModel.fromMap(s)));
+    final scans = List<Scan>.from(results.map((s) => Scan.fromMap(s)));
 
     return scans;
   }
 
-  Future<ScanModel?> getScanById(int scanId) async {
+  Future<Scan?> getScanById(int scanId) async {
     final results = await _database.query('Scans', where: 'id = ?', whereArgs: [scanId]);
 
     if(results.isEmpty) return null;
 
-    final scan = ScanModel.fromMap(results.first);
+    final scan = Scan.fromMap(results.first);
 
     return scan;
   }
 
-   Future<List<ScanModel>> getScanByType(String type) async {
+   Future<List<Scan>> getScanByType(String type) async {
     final results = await _database.query('Scans',where: 'tipo = ?', whereArgs: [type]);
 
-    final scans = List<ScanModel>.from(results.map((s) => ScanModel.fromMap(s)));
+    final scans = List<Scan>.from(results.map((s) => Scan.fromMap(s)));
 
     return scans;
   }
   
-  Future<int> updateScanById(int scanId, ScanModel newScan ) async {
+  Future<int> updateScanById(int scanId, Scan newScan ) async {
     final result = await _database.update('Scans', newScan.toMap(), where: 'id = ?', whereArgs: [scanId]);
     return result;
   }
@@ -88,7 +88,7 @@ class SqfliteApi {
 
 
   //------------------------- RAW OPERATIONS --------------------------//
-  Future<int> insertScanRaw(ScanModel newScan) async {
+  Future<int> insertScanRaw(Scan newScan) async {
     final tipo  = newScan.tipo;
     final valor = newScan.valor ;
 
@@ -100,39 +100,39 @@ class SqfliteApi {
     return result;
   }
 
-   Future<List<ScanModel>> getScansRaw() async {
+   Future<List<Scan>> getScansRaw() async {
     final results = await _database.rawQuery('''
       SELECT * FROM Scans
     ''');
 
-    final scans = List<ScanModel>.from(results.map((s) => ScanModel.fromMap(s)));
+    final scans = List<Scan>.from(results.map((s) => Scan.fromMap(s)));
 
     return scans;
   }
 
-  Future<ScanModel?> getScanByIdRaw(int scanId) async {
+  Future<Scan?> getScanByIdRaw(int scanId) async {
     final result = await _database.rawQuery('''
       SELECT * FROM Scans WHERE id = '$scanId'
     ''');
 
     if(result.isEmpty) return null;
 
-    final scan = ScanModel.fromMap(result.first);
+    final scan = Scan.fromMap(result.first);
 
     return scan;
   }
 
-  Future<List<ScanModel>> getScanByTypeRaw(String type) async {
+  Future<List<Scan>> getScanByTypeRaw(String type) async {
     final results = await _database.rawQuery('''
       SELECT * FROM Scans WHERE tipo = '$type'
     ''');
 
-    final scans = List<ScanModel>.from(results.map((s) => ScanModel.fromMap(s)));
+    final scans = List<Scan>.from(results.map((s) => Scan.fromMap(s)));
 
     return scans;
   }
 
-  Future<int> updateScanByIdRaw(int scanId, ScanModel newScan ) async {
+  Future<int> updateScanByIdRaw(int scanId, Scan newScan ) async {
     final tipo  = newScan.tipo;
     final valor = newScan.valor;
 

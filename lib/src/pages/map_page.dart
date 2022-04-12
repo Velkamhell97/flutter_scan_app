@@ -4,9 +4,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/models.dart';
 
 class MapPage extends StatefulWidget {
-  final ScanModel scan;
+  final Scan scan;
 
-  const MapPage({Key? key, required this.scan});
+  const MapPage({Key? key, required this.scan}) : super(key: key);
 
   @override
   _MapPageState createState() => _MapPageState();
@@ -29,7 +29,7 @@ class _MapPageState extends State<MapPage> {
     );
 
     markers.add(Marker(
-      markerId: MarkerId('geo-location'),
+      markerId: const MarkerId('geo-location'),
       position: widget.scan.getLatLng()
     ));
   }
@@ -61,11 +61,11 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mapa'),
+        title: const Text('Mapa'),
         actions: [
           IconButton(
             onPressed: () => backToCenter(), 
-            icon: Icon(Icons.location_on)
+            icon: const Icon(Icons.location_on)
           )
         ],
       ),
@@ -82,7 +82,7 @@ class _MapPageState extends State<MapPage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => switchMapType(),
-        child: Icon(Icons.layers),
+        child: const Icon(Icons.layers),
       ),
     );
   }

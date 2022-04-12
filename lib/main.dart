@@ -16,14 +16,18 @@ void main() async{
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
 
+  /// Inicializa los servicios de hive, registra los adapters para la api y abra las box 
   await Hive.initFlutter();
-  Hive.registerAdapter(HiveScanModelAdapter()); //-Crea el adapter
-  await Hive.openBox<HiveScanModel>('scans'); //-Abre el box, crea la tabla o si exsite la abre
+  Hive.registerAdapter(ScanAdapter()); 
+  await Hive.openBox<Scan>('scans');
 
-  final sqflite = SqfliteApi();
-  await sqflite.initDB();
+  /// Todas las clases que necesiten inicializacion en el punto mas alto de la app, deben ser
+  /// clases singlenton o estaticas para poder ser utilizadas en este punto, en este caso como
+  /// el sqflite api va a actuar mas como tipo de provider (solo se usara dentro de este) se 
+  /// declara singlenton pero por ejemplo un servicio de notificaciones seria mejor estatico
+  await SqfliteApi().initDB();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
  
 class MyApp extends StatelessWidget {
@@ -31,33 +35,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         Provider(create: (_) => HiveApi()),
-        ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => UIProvider()),
         ChangeNotifierProvider(create: (_) => ScansProvider()),
-        ChangeNotifierProvider(create: (_) => HiveScansProvider()),
       ],
       child: MaterialApp(
         scaffoldMessengerKey: Notifications.messengerKey,
+        navigatorKey: Notifications.navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'QR Reader',
-        initialRoute: 'home',
-        routes: {
-          'home' : (_) => HomePage(),
-          // 'map' : (_) => MapPage()
-        },
+        home: const HomePage(),
         theme: ThemeData(
-          colorScheme: ColorScheme.light().copyWith(
+          colorScheme: const ColorScheme.light().copyWith(
             primary: Colors.deepPurple,
             secondary: Colors.deepPurple,
             onSecondary: Colors.white,
           ),
-          listTileTheme: ListTileThemeData(
+          listTileTheme: const ListTileThemeData(
             iconColor: Colors.deepPurple
           ),
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Colors.deepPurple
           )
         ),
